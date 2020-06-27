@@ -16,7 +16,6 @@ E informar um <usuario> válido
 E inserir uma <passwd> válida
 E clicar em Sign in
 Então a tela de My Store será exibida
-E efetuará o Sign out
 
 Exemplos:
 

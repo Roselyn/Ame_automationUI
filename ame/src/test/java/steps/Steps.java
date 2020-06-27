@@ -18,11 +18,13 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
+import pages.LoginPage;
 
 public class Steps {
 	
 	private WebDriver driver;
-	
+	private LoginPage login;
+		
 	@Dado("que esteja na tela inicial da loja")
 	public void que_esteja_na_tela_inicial_da_loja() {
 		
@@ -35,7 +37,9 @@ public class Steps {
 	@Quando("eu clicar em Sign in")
 	public void eu_clicar_em_Sign_in() {
 		
-		driver.findElement(By.linkText("Sign in")).click();
+		login = new LoginPage(driver);
+		
+		login.clickSingIn();
 		
 	}
 
@@ -45,21 +49,21 @@ public class Steps {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#email")));
 		
-		driver.findElement(By.cssSelector("#email")).sendKeys(usuario);
+		login.escreverEmail(usuario);
 		
 	}
 
 	@E("inserir uma {string} válida")
 	public void inserir_uma_senha_válida(String passwd) {
 		
-		driver.findElement(By.cssSelector("#passwd")).sendKeys(passwd);
+		login.escreverSenha(passwd);
 		
 	}
 	
 	@E("clicar em Sign in")
 	public void clicar_em_Sign_in() {
 		
-		driver.findElement(By.cssSelector("#SubmitLogin")).click();
+		login.clickSingOn();
 		
 	}
 
@@ -77,13 +81,15 @@ public class Steps {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#email")));
 		
-		driver.findElement(By.cssSelector("#email")).sendKeys(usuario1);
+		login.escreverEmail(usuario1);
+
 	}
 
 	@E("inserir uma {string} inválida")
 	public void inserir_uma_inválida(String passwd1) {
 		
-		driver.findElement(By.cssSelector("#passwd")).sendKeys(passwd1);
+		login.escreverSenha(passwd1);
+
 	}
 
 	@Então("a mensagem Invalid email address será exibida")
@@ -100,15 +106,15 @@ public class Steps {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#email")));
 		
-		driver.findElement(By.cssSelector("#email")).sendKeys(usuario2);
-	    
+		login.escreverEmail(usuario2);
+	
 	}
 
 	@E("inserir uma {string} em branco")
 	public void inserir_uma_em_branco(String passwd2) {
 		
-		driver.findElement(By.cssSelector("#passwd")).sendKeys(passwd2);
-	   
+		login.escreverSenha(passwd2);
+		  
 	}
 
 	@Então("a mensagem An email address required será exibida")
@@ -117,13 +123,6 @@ public class Steps {
 		String erroLogin = driver.findElement(By.cssSelector("ol > li")).getText();
 		Assert.assertEquals(erroLogin, "An email address required.");
 		
-	}
-
-	@E("efetuará o Sign out")
-	public void efetuará_o_Sign_out() throws Exception{
-		
-		driver.findElement(By.linkText("Sign out")).click();
-
 	}
 	
 	@After(order = 1)
